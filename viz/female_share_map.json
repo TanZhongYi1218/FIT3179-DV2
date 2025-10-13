@@ -1,0 +1,67 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Malaysia: Female Population Share by State (2020)",
+  "width": 980,
+  "height": 560,
+  "background": "#eef6fb",
+  "view": { "stroke": null },
+"projection": {
+  "type": "mercator",
+  "center": [110, 3],   
+  "scale": 2800
+},
+  "layer": [
+    {
+      "data": { "graticule": { "step": [10, 10] } },
+      "mark": { "type": "geoshape", "stroke": "#cbd5e1", "strokeWidth": 0.5 }
+    },
+    {
+      "data": { 
+        "url": "data/malaysia_map_file.topojson",
+        "format": {
+          "type": "topojson",
+          "feature": "malaysia map geoJSon file"
+        }
+      },
+      "transform": [
+        {
+          "lookup": "properties.name",
+          "from": {
+            "data": { "url": "data/state_gender_2020.csv" },
+            "key": "State",
+            "fields": ["Female_000", "Male_000", "Total_000", "FemaleSharePct"]
+          }
+        }
+      ],
+      "mark": { "type": "geoshape", "stroke": "#ffffff", "strokeWidth": 0.6 },
+      "params": [{"name": "hover", "select": {"type":"point","on":"pointerover","clear":"pointerout"}}],
+      "encoding": {
+        "color": {
+          "field": "FemaleSharePct",
+          "type": "quantitative",
+          "title": "Female share (%)",
+          "scale": {
+            "type": "threshold",
+            "domain": [47, 49, 51, 53],
+            "range": ["#f7fbff", "#c6dbef", "#6baed6", "#3182bd", "#08519c"]
+          },
+          "legend": { "orient": "right",
+            "titleFontSize": 14,
+            "labelFontSize": 12,
+            "symbolSize": 140
+          }
+        },
+        "tooltip": [
+          { "field": "properties.name", "type": "nominal", "title": "State" },
+          { "field": "Female_000", "type": "quantitative", "title": "Female ('000)", "format": ".1f" },
+          { "field": "Male_000", "type": "quantitative", "title": "Male ('000)", "format": ".1f" },
+          { "field": "Total_000", "type": "quantitative", "title": "Total ('000)", "format": ".1f" },
+          { "field": "FemaleSharePct", "type": "quantitative", "title": "Female share (%)", "format": ".2f" }
+        ]
+      }
+    }
+  ],
+  "config": {
+    "geoshape": { "filled": true }
+  }
+}

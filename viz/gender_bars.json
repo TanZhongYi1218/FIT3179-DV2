@@ -1,0 +1,40 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Female vs Male Population by State (2020, '000)",
+  "width": "container",
+  "height": 520,
+  "data": {"url": "data/state_gender_2020.csv"},
+  "params": [
+    {
+      "name": "region_filter",
+      "value": "All",
+      "bind": {"input": "select", "options": ["All","Peninsular","East"], "name": "Region: "}
+    }
+  ],
+  "transform": [
+    { "calculate": "indexof(['Sabah','Sarawak'], datum.State) >= 0 ? 'East' : 'Peninsular'", "as": "Region" },
+    { "fold": ["Female_000", "Male_000"], "as": ["Gender", "Value_000"] },
+    { "calculate": "datum.Gender == 'Female_000' ? 'Female' : 'Male'", "as": "GenderClean" },
+    { "filter": "region_filter == 'All' ? true : datum.Region == region_filter" }
+  ],
+  "mark": {"type": "bar", "cornerRadiusEnd": 2},
+  "encoding": {
+    "x": {"field": "State", "type": "nominal", "axis": {"labelAngle": -45, "title": null}},
+    "xOffset": {"field": "GenderClean", "type": "nominal"},
+    "y": {"field": "Value_000", "type": "quantitative", "title": "Population ('000)", "axis": {"grid": true}},
+    "color": {
+      "field": "GenderClean", "type": "nominal",
+      "scale": {"range": ["#e377c2", "#1f77b4"]},
+      "legend": {"title": "Gender",
+        "titleFontSize": 14,
+        "labelFontSize": 12,
+        "symbolSize": 40
+      }
+    },
+    "tooltip": [
+      {"field": "State", "type": "nominal", "title": "State"},
+      {"field": "GenderClean", "type": "nominal", "title": "Gender"},
+      {"field": "Value_000", "type": "quantitative", "title": "Population ('000)", "format": ",.1f"}
+    ]
+  }
+}

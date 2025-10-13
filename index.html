@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Malaysia Population by Gender — Choropleth</title>
+</head>
+<body style="margin:0;padding:20px;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;">
+<h1 style="margin:0 0 12px;">Malaysia: Female Population Share by State (2020)</h1>
+<div id="map" style="max-width:1100px;width:100%;margin-bottom:28px;"></div>
+
+<h2 style="margin:24px 0 8px;">Female vs Male Population by State (2020)</h2>
+<div id="bars" style="max-width:1100px;width:100%;"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+<script>
+  vegaEmbed('#map', 'viz/female_share_map.json', {actions:false}).catch(console.error);
+  vegaEmbed('#bars', 'viz/gender_bars.json', {actions:false}).catch(console.error);
+</script>
+
+
+</body>
+</html>
