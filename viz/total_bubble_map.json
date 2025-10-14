@@ -1,0 +1,50 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Where Are People Concentrated? State Total Population (’000)",
+  "width": "container",
+  "height": 520,
+  "background": "#eef6fb",
+  "view": {"stroke": null},
+  "projection": {"type": "mercator", "center": [110, 3], "scale": 1800},
+  "layer": [
+    {
+      "data": {"url": "../data/malaysia_states.geojson"},
+      "mark": {"type": "geoshape", "fill": "#e6eef5", "stroke": "#ffffff", "strokeWidth": 0.6}
+    },
+    {
+      "data": {"url": "../data/state_centroids.csv"},
+      "transform": [
+        {
+          "lookup": "State",
+          "from": {
+            "data": {"url": "../data/state_gender_2020_with_gap.csv"},
+            "key": "State",
+            "fields": ["Total_000", "FemaleSharePct"]
+          }
+        },
+        {"calculate": "indexof(['Sabah','Sarawak','Labuan'], datum.State) >= 0 ? 'East' : 'Peninsular'", "as": "Region"}
+      ],
+      "mark": {"type": "circle", "opacity": 0.85, "stroke": "#334155", "strokeWidth": 0.3},
+      "encoding": {
+        "longitude": {"field": "lon", "type": "quantitative"},
+        "latitude": {"field": "lat", "type": "quantitative"},
+        "size": {
+          "field": "Total_000", "type": "quantitative",
+          "scale": {"type": "sqrt", "range": [10, 1800]},
+          "legend": {"title": "Total population (’000)"}
+        },
+        "color": {
+          "field": "Region", "type": "nominal",
+          "scale": {"range": ["#60a5fa", "#a78bfa"]},
+          "legend": {"title": "Region"}
+        },
+        "tooltip": [
+          {"field": "State", "type": "nominal"},
+          {"field": "Total_000", "type": "quantitative", "title": "Total (’000)", "format": ",.1f"},
+          {"field": "FemaleSharePct", "type": "quantitative", "title": "Female share (%)", "format": ".2f"}
+        ]
+      }
+    }
+  ],
+  "config": {"legend": {"labelFontSize": 12, "titleFontSize": 14}}
+}

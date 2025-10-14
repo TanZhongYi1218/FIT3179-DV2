@@ -1,0 +1,52 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "How Far From Parity? Gender Gap from 50% (pp)",
+  "width": "container",
+  "height": 560,
+  "data": {"url": "../data/state_gender_2020.csv"},
+  "params": [
+    {
+      "name": "which",
+      "value": "All",
+      "bind": {"input": "select", "options": ["All", "Top 5", "Bottom 5"], "name": "Show: "}
+    }
+  ],
+  "transform": [
+    {"calculate": "abs(datum.GapPct)", "as": "AbsGap"},
+    {"window": [{"op": "rank", "as": "rankByAbs"}], "sort": [{"field": "AbsGap", "order": "descending"}]},
+    {"calculate": "which", "as": "filter_choice"},
+    {
+      "filter": "datum.filter_choice == 'All' || (datum.filter_choice == 'Top 5' ? datum.rankByAbs <= 5 : datum.rankByAbs > 5)"
+    },
+    {"calculate": "datum.GapPct >= 0 ? 'Female-leaning' : 'Male-leaning'", "as": "Leans"}
+  ],
+  "layer": [
+    {
+      "mark": {"type": "bar"},
+      "encoding": {
+        "y": {"field": "State", "type": "nominal", "sort": {"field": "AbsGap", "order": "descending"}},
+        "x": {
+          "field": "GapPct", "type": "quantitative",
+          "title": "Gap from 50% (percentage points)",
+          "scale": {"domain": [-4, 1]},  
+          "axis": {"grid": true}
+        },
+        "color": {
+          "field": "Leans", "type": "nominal",
+          "scale": {"range": ["#ef4444", "#3b82f6"]},
+          "legend": {"title": null}
+        },
+        "tooltip": [
+          {"field": "State", "type": "nominal"},
+          {"field": "FemaleSharePct", "type": "quantitative", "title": "Female share (%)", "format": ".2f"},
+          {"field": "GapPct", "type": "quantitative", "title": "Gap from 50% (pp)", "format": "+.2f"}
+        ]
+      }
+    },
+    {
+      "mark": {"type": "rule", "color": "#6b7280", "strokeWidth": 1},
+      "encoding": {"x": {"datum": 0}}
+    }
+  ],
+  "config": {"legend": {"labelFontSize": 12, "titleFontSize": 14}}
+}

@@ -1,26 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Malaysia Population by Gender — Choropleth</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malaysia's States Population Analysis 2020</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
-<body style="margin:0;padding:20px;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;">
-<h1 style="margin:0 0 12px;">Malaysia: Female Population Share by State (2020)</h1>
-<div id="map" style="max-width:1100px;width:100%;margin-bottom:28px;"></div>
+<body>
+  <main>
+    <h1>Malaysia's states compared: female share of population, state population, gender gaps in 2020</h1>
 
-<h2 style="margin:24px 0 8px;">Female vs Male Population by State (2020)</h2>
-<div id="bars" style="max-width:1100px;width:100%;"></div>
+    <section>
+      <h2>1) Where are people concentrated?</h2>
+      <div id="map-bubbles"></div>
+    </section>
 
-<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
-<script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
-<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <section>
+      <h2>2) How do totals split by gender?</h2>
+      <div id="bars"></div>
+    </section>
 
-<script>
-  vegaEmbed('#map', 'viz/female_share_map.json', {actions:false}).catch(console.error);
-  vegaEmbed('#bars', 'viz/gender_bars.json', {actions:false}).catch(console.error);
-</script>
+    <section>
+      <h2>3) Where is the balance higher or lower?</h2>
+      <div id="map-female-share"></div>
+    </section>
 
+    <section>
+      <h2>4) How far from parity?</h2>
+      <div id="gap-bars"></div>
+    </section>
+  </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <script>
+    vegaEmbed('#map-bubbles', 'viz/total_bubble_map.json', {actions:false});
+    vegaEmbed('#bars',        'viz/gender_bars.json', {actions:false});
+    vegaEmbed('#map-female-share', 'viz/female_share_map.json', {actions:false});
+    vegaEmbed('#gap-bars',    'viz/gap_diverging_bars.json', {actions:false});
+  </script>
 </body>
 </html>
