@@ -5,11 +5,39 @@
   "height": 560,
   "background": "#eef6fb",
   "view": { "stroke": null },
-"projection": {
-  "type": "mercator",
-  "center": [110, 3],   
-  "scale": 2800
-},
+  "params": [
+    {
+      "name": "zoom_level",
+      "value": 2800,
+      "bind": { 
+        "input": "range", 
+        "min": 1200, 
+        "max": 5000, 
+        "step": 100, 
+        "name": "Zoom Level: " 
+      }
+    },
+    {
+      "name": "center_to",
+      "value": [110, 3],
+      "bind": {
+        "input": "select",
+        "options": [
+          [110, 3],
+          [102.5, 4.0],
+          [114.5, 3.5]
+        ],
+        "labels": ["🇲🇾 National View", "Peninsular Malaysia", "East Malaysia"],
+        "name": "Map Center: "
+      }
+    }
+  ],
+  "projection": {
+    "type": "mercator",
+    "center": {"expr": "center_to"},
+    "scale": {"expr": "zoom_level"}
+  },
+
   "layer": [
     {
       "data": { "graticule": { "step": [10, 10] } },
@@ -17,7 +45,7 @@
     },
     {
       "data": { 
-        "url": "data/malaysia_map_file.topojson",
+        "url": "../data/malaysia_map_file.topojson",
         "format": {
           "type": "topojson",
           "feature": "malaysia map geoJSon file"
@@ -27,7 +55,7 @@
         {
           "lookup": "properties.name",
           "from": {
-            "data": { "url": "data/state_gender_2020.csv" },
+            "data": { "url": "../data/state_gender_2020.csv" },
             "key": "State",
             "fields": ["Female_000", "Male_000", "Total_000", "FemaleSharePct"]
           }

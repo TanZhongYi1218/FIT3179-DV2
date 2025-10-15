@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Relationship Explorer</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #status { margin: 20px 0; padding: 10px; border-radius: 5px; }
+    .success { background-color: #d4edda; color: #155724; }
+    .error { background-color: #f8d7da; color: #721c24; }
+    #chart-container { border: 2px solid #ccc; min-height: 600px; }
+  </style>
+</head>
+<body>
+  <h1>Testing Relationship Explorer</h1>
+  <div id="status">Loading...</div>
+  <div id="chart-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  
+  <script>
+    const statusDiv = document.getElementById('status');
+    
+    // Test if Vega libraries loaded
+    if (typeof vegaEmbed === 'undefined') {
+      statusDiv.innerHTML = '❌ Vega libraries failed to load';
+      statusDiv.className = 'error';
+    } else {
+      statusDiv.innerHTML = '✅ Vega libraries loaded successfully';
+      statusDiv.className = 'success';
+    }
+
+    // Try to load the relationship explorer
+    vegaEmbed('#chart-container', 'viz/relationship_explorer.json', {actions: false})
+      .then(result => {
+        statusDiv.innerHTML += '<br>✅ Relationship explorer loaded successfully!';
+        statusDiv.className = 'success';
+        console.log('Chart loaded:', result);
+      })
+      .catch(error => {
+        statusDiv.innerHTML += '<br>❌ Error loading chart: ' + error.message;
+        statusDiv.className = 'error';
+        console.error('Chart error:', error);
+      });
+  </script>
+</body>
+</html>

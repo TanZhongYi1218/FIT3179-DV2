@@ -1,50 +1,115 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Where Are People Concentrated? State Total Population (’000)",
-  "width": "container",
+  "title": "Where Are People Concentrated? State Total Population ('000)",
+  "width": 980,
   "height": 520,
   "background": "#eef6fb",
   "view": {"stroke": null},
-  "projection": {"type": "mercator", "center": [110, 3], "scale": 1800},
-  "layer": [
+  "params": [
     {
-      "data": {"url": "../data/malaysia_states.geojson"},
-      "mark": {"type": "geoshape", "fill": "#e6eef5", "stroke": "#ffffff", "strokeWidth": 0.6}
+      "name": "zoom_level",
+      "value": 2800,
+      "bind": { 
+        "input": "range", 
+        "min": 1200, 
+        "max": 5000, 
+        "step": 100, 
+        "name": "Zoom Level: " 
+      }
     },
     {
-      "data": {"url": "../data/state_centroids.csv"},
+      "name": "center_to",
+      "value": [109, 4],
+      "bind": {
+        "input": "select",
+        "options": [
+          [109, 4],
+          [102.5, 4.0],
+          [114.5, 3.5]
+        ],
+        "labels": ["🇲🇾 National View", "🏛️ Peninsular Malaysia", "🌴 East Malaysia"],
+        "name": "Map Center: "
+      }
+    }
+  ],
+  "projection": {
+    "type": "mercator", 
+    "center": {"expr": "center_to"}, 
+    "scale": {"expr": "zoom_level"}
+  },
+  "layer": [
+    {
+      "data": { "graticule": { "step": [10, 10] } },
+      "mark": { "type": "geoshape", "stroke": "#cbd5e1", "strokeWidth": 0.5, "opacity": 0.6 }
+    },
+    {
+      "data": {
+        "url": "../data/malaysia_map_file.topojson",
+        "format": { "type": "topojson", "feature": "malaysia map geoJSon file" }
+      },
+      "mark": { "type": "geoshape", "fill": "#e6eef5", "stroke": "#ffffff", "strokeWidth": 0.6 }
+    },
+    {
+      "data": { "url": "../data/state_centroids.csv" },
       "transform": [
         {
           "lookup": "State",
           "from": {
-            "data": {"url": "../data/state_gender_2020_with_gap.csv"},
+            "data": { "url": "../data/state_gender_2020.csv" },
             "key": "State",
             "fields": ["Total_000", "FemaleSharePct"]
           }
         },
-        {"calculate": "indexof(['Sabah','Sarawak','Labuan'], datum.State) >= 0 ? 'East' : 'Peninsular'", "as": "Region"}
+        {
+          "calculate": "indexof(['Sabah','Sarawak','Labuan'], datum.State) >= 0 ? 'East Malaysia' : 'Peninsular Malaysia'",
+          "as": "Region"
+        }
       ],
-      "mark": {"type": "circle", "opacity": 0.85, "stroke": "#334155", "strokeWidth": 0.3},
+      "mark": { 
+        "type": "circle", 
+        "opacity": 0.85, 
+        "stroke": "#334155", 
+        "strokeWidth": 1,
+        "strokeOpacity": 0.8
+      },
+      "params": [
+        {"name": "hover", "select": {"type": "point", "on": "pointerover", "clear": "pointerout"}}
+      ],
       "encoding": {
-        "longitude": {"field": "lon", "type": "quantitative"},
-        "latitude": {"field": "lat", "type": "quantitative"},
+        "longitude": { "field": "lon", "type": "quantitative" },
+        "latitude": { "field": "lat", "type": "quantitative" },
         "size": {
-          "field": "Total_000", "type": "quantitative",
-          "scale": {"type": "sqrt", "range": [10, 1800]},
-          "legend": {"title": "Total population (’000)"}
+          "field": "Total_000",
+          "type": "quantitative",
+          "scale": { "type": "sqrt", "range": [50, 1200] },
+          "legend": { "title": "Total population ('000)" }
         },
         "color": {
-          "field": "Region", "type": "nominal",
-          "scale": {"range": ["#60a5fa", "#a78bfa"]},
-          "legend": {"title": "Region"}
+          "field": "Region",
+          "type": "nominal",
+          "scale": { "range": ["#3b82f6", "#8b5cf6"] },
+          "legend": { "title": "Region" }
+        },
+        "opacity": {
+          "condition": {"param": "hover", "value": 1.0},
+          "value": 0.85
+        },
+        "stroke": {
+          "condition": {"param": "hover", "value": "#1f2937"},
+          "value": "#334155"
+        },
+        "strokeWidth": {
+          "condition": {"param": "hover", "value": 2},
+          "value": 1
         },
         "tooltip": [
-          {"field": "State", "type": "nominal"},
-          {"field": "Total_000", "type": "quantitative", "title": "Total (’000)", "format": ",.1f"},
-          {"field": "FemaleSharePct", "type": "quantitative", "title": "Female share (%)", "format": ".2f"}
+          { "field": "State", "type": "nominal" },
+          { "field": "Total_000", "type": "quantitative", "title": "Total ('000)", "format": ",.1f" },
+          { "field": "FemaleSharePct", "type": "quantitative", "title": "Female share (%)", "format": ".2f" },
+          { "field": "Region", "type": "nominal", "title": "Region" }
         ]
       }
     }
   ],
-  "config": {"legend": {"labelFontSize": 12, "titleFontSize": 14}}
+  "config": { "legend": { "labelFontSize": 12, "titleFontSize": 14 } }
 }

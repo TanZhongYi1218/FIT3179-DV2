@@ -1,0 +1,121 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Overview + Detail: Brush Female Share (%) to focus the map",
+  "background": "#eef6fb",
+  "data": {"url": "../data/state_gender_2020.csv"},
+  "vconcat": [
+    {
+      "height": 300,
+      "width": 980,
+      "projection": {"type": "mercator", "center": [108, 8], "scale": 2200},
+      "layer": [
+        {
+          "data": {
+            "url": "../data/malaysia_map_file.topojson",
+            "format": {"type": "topojson", "feature": "malaysia map geoJSon file"}
+          },
+          "mark": {"type": "geoshape", "fill": "#e6eef5", "stroke": "white", "strokeWidth": 0.6}
+        },
+        {
+          "data": {"url": "../data/state_centroids.csv"},
+          "transform": [
+            {
+              "lookup": "State",
+              "from": {
+                "data": {"url": "../data/state_gender_2020.csv"},
+                "key": "State",
+                "fields": ["Total_000", "FemaleSharePct", "GapPct"]
+              }
+            },
+            {
+              "calculate": "indexof(['Sabah','Sarawak','Labuan'], datum.State) >= 0 ? 'East Malaysia' : 'Peninsular Malaysia'",
+              "as": "Region"
+            }
+          ],
+          "mark": {"type": "circle", "stroke": "#334155", "strokeWidth": 1},
+          "encoding": {
+            "longitude": {"field": "lon", "type": "quantitative"},
+            "latitude": {"field": "lat", "type": "quantitative"},
+            "size": {
+              "field": "Total_000",
+              "type": "quantitative",
+              "scale": {"type": "sqrt", "range": [200, 1200]},
+              "legend": {"title": "Total population ('000)"}
+            },
+            "color": {
+              "field": "Region",
+              "type": "nominal",
+              "scale": {"range": ["#3b82f6", "#8b5cf6"]},
+              "legend": {"title": "Region"}
+            },
+            "opacity": {
+              "condition": {"param": "brush", "value": 0.7},
+              "value": 0.2
+            },
+            "stroke": {
+              "condition": {"param": "brush", "value": "#1f2937"},
+              "value": "#6b7280"
+            },
+            "strokeWidth": {
+              "condition": {"param": "brush", "value": 2},
+              "value": 0.5
+            },
+            "tooltip": [
+              {"field": "State", "type": "nominal", "title": "State"},
+              {"field": "Total_000", "type": "quantitative", "title": "Total population ('000)", "format": ",.1f"},
+              {"field": "FemaleSharePct", "type": "quantitative", "title": "Female share (%)", "format": ".2f"},
+              {"field": "Region", "type": "nominal", "title": "Region"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "height": 160,
+      "width": 980,
+      "title": "Brush a Female Share (%) range below to focus states on the map",
+      "mark": {
+        "type": "bar",
+        "stroke": "#334155",
+        "strokeWidth": 0.5,
+        "cornerRadiusEnd": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "FemaleSharePct",
+          "bin": {"step": 0.25, "extent": [46, 54]},
+          "title": "Female share (%)",
+          "axis": {"grid": true}
+        },
+        "y": {
+          "aggregate": "count", 
+          "title": "Count of states",
+          "axis": {"grid": true}
+        },
+        "color": {
+          "condition": {"param": "brush", "value": "#3b82f6"},
+          "value": "#94a3b8"
+        },
+        "opacity": {
+          "condition": {"param": "brush", "value": 0.8},
+          "value": 0.4
+        },
+        "tooltip": [
+          {"field": "FemaleSharePct", "bin": {"step": 0.25}, "title": "Female share range (%)"},
+          {"aggregate": "count", "title": "Number of states"}
+        ]
+      },
+      "params": [
+        {
+          "name": "brush", 
+          "select": {"type": "interval", "encodings": ["x"]}
+        }
+      ]
+    }
+  ],
+  "config": {
+    "view": {"stroke": null}, 
+    "legend": {"labelFontSize": 12, "titleFontSize": 14},
+    "title": {"fontSize": 16, "anchor": "start", "color": "#374151"}
+  }
+}

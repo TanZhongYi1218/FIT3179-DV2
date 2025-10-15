@@ -12,24 +12,115 @@
 
     <section>
       <h2>1) Where are people concentrated?</h2>
+      <div class="description">
+        <p>
+          Population is heavily concentrated in the urban-industrial corridor of Selangor–Kuala Lumpur–Johor on the peninsula, with Sabah and Sarawak the largest in East Malaysia. Smaller federal territories (Labuan, Putrajaya) 
+          and northern states contribute less to the national total. Urbanisation and job opportunities in manufacturing, services, and logistics cluster population around Greater KL and the 
+          southern growth triangle with Johor–Singapore.
+        </p>
+      </div>
       <div id="map-bubbles"></div>
     </section>
 
     <section>
       <h2>2) How do totals split by gender?</h2>
+      <div class="description">
+        <p>Malaysia’s overall sex ratio has trended more male in recent decades, largely because of non-citizen, male-dominated labour migration (construction, plantations, some manufacturing). The MyAgeing analysis 
+          notes the citizen sex ratio was broadly stable (≈103 males per 100 females in 2010–2020) 
+          while the total population became more male as foreign workers grew; state-level differences reflect where those jobs are concentrated.</p>
+      </div>
       <div id="bars"></div>
     </section>
 
     <section>
       <h2>3) Where is the balance higher or lower?</h2>
+      <div class="description">
+        <p>Census 2020 highlights high sex ratios (more men) in large urban/industrial hubs such as Johor, Kuala Lumpur, Selangor; some places are closer to or below parity (e.g., Putrajaya reported ~96 males per 100 females in 2020).
+           These differences are consistent with the geography of work (male-dominated sectors and migrant concentrations).</p>
+      </div>
       <div id="map-female-share"></div>
     </section>
 
     <section>
       <h2>4) How far from parity?</h2>
+      <div class="description">
+        <p>Bars to the left are male-leaning (female share <50%); bars to the right are female-leaning (female share >50%). Sorting by the absolute gap highlights which states deviate the most from parity.</p>
+      </div>
       <div id="gap-bars"></div>
     </section>
+
+    <section>
+      <h2>5) Interactive Overview of Female Share across the states</h2>
+      <div class="description">
+        <p>This interactive visualization uses a brush-and-link technique to explore gender distribution patterns. The histogram below shows the distribution of female share percentages across all states. Drag to select a range in the histogram to highlight corresponding states on the map above.</p>
+      </div>
+      <div id="rel-explorer" ></div>
+    </section>
   </main>
+
+  <!-- Metadata Section -->
+  <footer class="metadata">
+    <hr>
+    <section class="project-info">
+      <h3>Project Information</h3>
+      <div class="metadata-grid">
+        <div class="metadata-item">
+          <strong>Project Title:</strong>
+          <span>Malaysia's states compared: female share of population, state population, gender gaps in 2020</span>
+        </div>
+        <div class="metadata-item">
+          <strong>Course:</strong>
+          <span> FIT3179 Data Visualization</span>
+        </div>
+        <div class="metadata-item">
+          <strong>Assignment:</strong>
+          <span>Data Visualization 2</span>
+        </div>
+        <div class="metadata-item">
+          <strong>Semester:</strong>
+          <span>Semester 2, 2025</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="author-info">
+      <h3>Author Information</h3>
+      <div class="metadata-grid">
+        <div class="metadata-item">
+          <strong>Student Name:</strong>
+          <span>Tan Zhong Yi</span>
+        </div>
+        <div class="metadata-item">
+          <strong>Student ID:</strong>
+          <span>34539158</span>
+        </div>
+        <div class="metadata-item">
+          <strong>Email:</strong>
+          <span>ztan0157@student.monash.edu</span>
+        </div>
+        <div class="metadata-item">
+          <strong>Date:</strong>
+          <span>15/10/2025</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="data-sources">
+      <h3>Data Sources</h3>
+      <ul>
+        <li><strong>Primary Dataset:</strong><a href="https://archive.data.gov.my/data/dataset/population-by-state-administrative-district-and-sex"
+          target="_blank">Population by state, administrative district and sex - Jabatan Perangkaan Malaysia</a> </li>
+        <li><strong>Geographic Data:</strong><a href="https://simplemaps.com/gis/country/my"
+          target="_blank">Free Malaysia GIS Map Files from simplemaps.com</a></li>
+          <li><strong>Additional Data:</strong><a href="https://myageing.upm.edu.my/artikel/interactive_malaysias_skewed_sex_ratio_what_it_means_and_what_must_be_done-67695"
+          target="_blank">Interactive: Malaysia skewed sex-ratio, what it means and what must be done. - MyAgeing</a></li>
+      </ul>
+    </section>
+
+    <div class="footer-note">
+      <p><small>This project was created as part of FIT3179 Data Visualization 2 at Monash University. Last updated: 15/10/2025</small></p>
+    </div>
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
@@ -39,6 +130,7 @@
     vegaEmbed('#bars',        'viz/gender_bars.json', {actions:false});
     vegaEmbed('#map-female-share', 'viz/female_share_map.json', {actions:false});
     vegaEmbed('#gap-bars',    'viz/gap_diverging_bars.json', {actions:false});
+    vegaEmbed('#rel-explorer', 'viz/relationship_explorer.json', {actions:false}).catch(console.error);
   </script>
 </body>
 </html>

@@ -1,9 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": "How Far From Parity? Gender Gap from 50% (pp)",
-  "width": "container",
-  "height": 560,
-  "data": {"url": "../data/state_gender_2020.csv"},
+  "width": 1180,
+  "height": 760,
+  "data": {"url": "/data/state_gender_2020.csv"},
   "params": [
     {
       "name": "which",
@@ -28,7 +28,7 @@
         "x": {
           "field": "GapPct", "type": "quantitative",
           "title": "Gap from 50% (percentage points)",
-          "scale": {"domain": [-4, 1]},  
+          "scale": {"domain": [-3.6, 3.6]},  
           "axis": {"grid": true}
         },
         "color": {
