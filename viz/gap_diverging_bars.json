@@ -3,7 +3,7 @@
   "title": "How Far From Parity? Gender Gap from 50% (pp)",
   "width": 1180,
   "height": 760,
-  "data": {"url": "/data/state_gender_2020.csv"},
+  "data": {"url": "data/state_gender_2020.csv"},
   "params": [
     {
       "name": "which",

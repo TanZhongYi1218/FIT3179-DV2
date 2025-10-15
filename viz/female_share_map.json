@@ -45,7 +45,7 @@
     },
     {
       "data": { 
-        "url": "/data/malaysia_map_file.topojson",
+        "url": "data/malaysia_map_file.topojson",
         "format": {
           "type": "topojson",
           "feature": "malaysia map geoJSon file"
@@ -55,7 +55,7 @@
         {
           "lookup": "properties.name",
           "from": {
-            "data": { "url": "/data/state_gender_2020.csv" },
+            "data": { "url": "data/state_gender_2020.csv" },
             "key": "State",
             "fields": ["Female_000", "Male_000", "Total_000", "FemaleSharePct"]
           }

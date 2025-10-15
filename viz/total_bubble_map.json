@@ -44,18 +44,18 @@
     },
     {
       "data": {
-        "url": "/data/malaysia_map_file.topojson",
+        "url": "data/malaysia_map_file.topojson",
         "format": { "type": "topojson", "feature": "malaysia map geoJSon file" }
       },
       "mark": { "type": "geoshape", "fill": "#e6eef5", "stroke": "#ffffff", "strokeWidth": 0.6 }
     },
     {
-      "data": { "url": "/data/state_centroids.csv" },
+      "data": { "url": "data/state_centroids.csv" },
       "transform": [
         {
           "lookup": "State",
           "from": {
-            "data": { "url": "/data/state_gender_2020.csv" },
+            "data": { "url": "data/state_gender_2020.csv" },
             "key": "State",
             "fields": ["Total_000", "FemaleSharePct"]
           }
