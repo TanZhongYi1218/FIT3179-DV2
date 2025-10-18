@@ -87,7 +87,65 @@
           { "field": "FemaleSharePct", "type": "quantitative", "title": "Female share (%)", "format": ".2f" }
         ]
       }
-    }
+    },
+    {
+  "data": { "url": "data/state_centroids.csv" },
+  "transform": [
+    {
+      "lookup": "State",
+      "from": {
+        "data": { "url": "data/state_gender_2020.csv" },
+        "key": "State",
+        "fields": ["FemaleSharePct"]
+      }
+    },
+    { "filter": "datum.FemaleSharePct > 50" }   
+  ],
+  "mark": { "type": "circle", "size": 80, "fill": "#ef4444", "stroke": "white", "strokeWidth": 1.2 },
+  "encoding": {
+    "longitude": { "field": "lon", "type": "quantitative" },
+    "latitude":  { "field": "lat", "type": "quantitative" }
+  }
+},
+{
+  "data": { "url": "data/state_centroids.csv" },
+  "transform": [
+    {
+      "lookup": "State",
+      "from": {
+        "data": { "url": "data/state_gender_2020.csv" },
+        "key": "State",
+        "fields": ["FemaleSharePct"]
+      }
+    },
+    { "filter": "datum.FemaleSharePct > 50" },
+    {
+      "calculate": "datum.State + ': ' + format(datum.FemaleSharePct, '.2f') + '% female'",
+      "as": "label"
+    },
+    { "calculate": "datum.State == 'Perlis' ? -10 : 10", "as": "dx_off" },   
+    { "calculate": "datum.State == 'Perlis' ? -8  : 12", "as": "dy_off" }    
+  ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 28,            
+        "dy": -8,           
+        "fontSize": 18,
+        "fontWeight": "lighter",
+        "fill": "#0051ff",          
+        "stroke": "black",          
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "longitude": { "field": "lon", "type": "quantitative" },
+        "latitude":  { "field": "lat", "type": "quantitative" },
+        "text":      { "field": "label" },
+        "color": {"value": "#111827"}
+      }
+}
+
   ],
   "config": {
     "geoshape": { "filled": true }

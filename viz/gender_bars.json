@@ -3,7 +3,7 @@
   "title": "Female vs Male Population by State (2020, '000)",
   "width": 980,
   "height": 520,
-  "data": {"url": "data/state_gender_2020.csv"},
+  "data": {"url": "../data/state_gender_2020.csv"},
   "params": [
     {
       "name": "region_filter",
@@ -11,26 +11,36 @@
       "bind": {"input": "select", "options": ["All","Peninsular","East"], "name": "Region: "}
     }
   ],
-  "transform": [
-    { "calculate": "indexof(['Sabah','Sarawak'], datum.State) >= 0 ? 'East' : 'Peninsular'", "as": "Region" },
-    { "fold": ["Female_000", "Male_000"], "as": ["Gender", "Value_000"] },
-    { "calculate": "datum.Gender == 'Female_000' ? 'Female' : 'Male'", "as": "GenderClean" },
-    { "filter": "region_filter == 'All' ? true : datum.Region == region_filter" }
-  ],
+"transform": [
+  { "calculate": "indexof(['Sabah','Sarawak','Labuan'], datum.State) >= 0 ? 'East' : 'Peninsular'", "as": "Region" },
+  
+  { "calculate": "indexof(['Selangor','Sabah','Johor','Sarawak','Perak'], datum.State) >= 0 ? 'top' : 'other'", "as": "TopFlag" },
+  
+  { "filter": "region_filter == 'All' ? true : datum.Region == region_filter" },
+  
+  { "fold": ["Female_000", "Male_000"], "as": ["Gender", "Value_000"] },
+  { "calculate": "datum.Gender == 'Female_000' ? 'Female' : 'Male'", "as": "GenderClean" }
+],
   "mark": {"type": "bar", "cornerRadiusEnd": 2},
   "encoding": {
     "x": {"field": "State", "type": "nominal", "axis": {"labelAngle": -45, "title": null}},
     "xOffset": {"field": "GenderClean", "type": "nominal"},
     "y": {"field": "Value_000", "type": "quantitative", "title": "Population ('000)", "axis": {"grid": true}},
-    "color": {
-      "field": "GenderClean", "type": "nominal",
-      "scale": {"range": ["#e377c2", "#1f77b4"]},
-      "legend": {"title": "Gender",
-        "titleFontSize": 14,
-        "labelFontSize": 12,
-        "symbolSize": 40
-      }
-    },
+"color": {
+  "condition": {
+    "test": "datum.TopFlag === 'top'",
+    "field": "GenderClean",
+    "type": "nominal",
+    "scale": { "range": ["#e377c2", "#1f77b4"] },
+    "legend": {
+      "title": "Gender (Top 5 states only)",
+      "titleFontSize": 14,
+      "labelFontSize": 12,
+      "symbolSize": 40
+    }
+  },
+  "value": "#d1d5db"
+},
     "tooltip": [
       {"field": "State", "type": "nominal", "title": "State"},
       {"field": "GenderClean", "type": "nominal", "title": "Gender"},

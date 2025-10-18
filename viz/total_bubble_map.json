@@ -116,21 +116,21 @@
         {  
           "lookup": "State",
           "from": { 
-            "data": { "url": "../data/state_centroids.csv" },
-            "key": "State", 
+            "data": { "url": "/data/state_centroids.csv" },
+            "key": "State",
             "fields": ["lon","lat"] 
           } 
         },
         {  
           "lookup": "State",
           "from": { 
-            "data": { "url": "../data/state_gender_2020.csv" },
+            "data": { "url": "/data/state_gender_2020.csv" },
             "key": "State", 
             "fields": ["Total_000"] 
           } 
         },
         { 
-          "calculate": "'Selangor — ' + format(datum.Total_000, ',.1f') + \"k (highest)\"", 
+          "calculate": "'Selangor — ' + format(datum.Total_000, ',.1f') + \"k (highest population)\"", 
           "as": "label" 
         }
       ],
@@ -138,18 +138,19 @@
         "type": "text",
         "align": "left",
         "baseline": "middle",
-        "dx": 14,            
+        "dx": 28,            
         "dy": -8,           
-        "fontSize": 12,
-        "fontWeight": "bold",
-        "fill": "#1b54b1",   
-        "stroke": "white",   
-        "strokeWidth": 3
+        "fontSize": 18,
+        "fontWeight": "lighter",
+        "fill": "#0051ff",          
+        "stroke": "black",          
+        "strokeWidth": 1
       },
       "encoding": {
         "longitude": { "field": "lon", "type": "quantitative" },
         "latitude":  { "field": "lat", "type": "quantitative" },
-        "text":      { "field": "label" }
+        "text":      { "field": "label" },
+        "color": {"value": "#111827"}
       }
     }
 
