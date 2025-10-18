@@ -3,7 +3,7 @@
   "title": "Female vs Male Population by State (2020, '000)",
   "width": 980,
   "height": 520,
-  "data": {"url": "../data/state_gender_2020.csv"},
+  "data": {"url": "data/state_gender_2020.csv"},
   "params": [
     {
       "name": "region_filter",
